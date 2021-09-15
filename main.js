@@ -1,6 +1,9 @@
 import * as WEBGL from "./webgl.js"
+import Vertice from "./Vertice.js";
 
-let context, canvas, shaderProgram, vertices;
+let context, canvas, shaderProgram, bufferVertices;
+
+let vertices
 
 function main() {
     //region BASIC SETUP
@@ -16,16 +19,16 @@ function main() {
     //endregion
 
     //put vertices inside buffer
-    vertices = new Float32Array([
-        0, 0, 0,
-        .5, 0, 0,
-        .5, .5, 0,
-        .5, 0, 0,
-        1, 0, 0,
-        .5, .5, 0
-    ])
 
-    WEBGL.bindArrayInsideShader(context, shaderProgram, vertices, "aCoordinates")
+    vertices = [
+        new Vertice(0, 0, 0),
+        new Vertice(.5, 0, 0),
+        new Vertice(.5, .5, 0)
+    ]
+
+    bufferVertices = Vertice.convertAllVerticeToSingleFloat32Array()
+
+    WEBGL.bindArrayInsideShader(context, shaderProgram, bufferVertices, "aCoordinates")
 
     //reset the canvas
     context.clearColor(1.0, 1.0, 1.0, 1.0)
@@ -35,18 +38,20 @@ function main() {
 }
 
 function update() {
-    vertices.forEach((vertex, index) => {
-        if ((index + 1) % 3 !== 0) {
-            vertices[index] += .001
+    vertices.forEach(vertice => {
+            vertice.x += .01;
+            if (vertice.x > 1) vertice.x = 0;
         }
-    })
-    WEBGL.bindArrayInsideShader(context, shaderProgram, vertices, "aCoordinates")
+    )
+
+    bufferVertices = Vertice.convertAllVerticeToSingleFloat32Array()
+    WEBGL.bindArrayInsideShader(context, shaderProgram, bufferVertices, "aCoordinates")
 
     //reset the canvas
     context.clearColor(1.0, 1.0, 1.0, 1.0)
     context.clear(context.COLOR_BUFFER_BIT);
 
-    context.drawArrays(context.TRIANGLE_FAN, 0, vertices.length / 3);
+    context.drawArrays(context.TRIANGLE_FAN, 0, bufferVertices.length / 3);
 }
 
 function animate() {
