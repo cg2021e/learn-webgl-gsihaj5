@@ -1,17 +1,19 @@
-export function setupShaderProgram(context) {
+export function createShaderProgram(context) {
     let shaderProgram = context.createProgram()
     context.attachShader(shaderProgram, _createVertexShader(context))
     context.attachShader(shaderProgram, _createFragmentShader(context))
     context.linkProgram(shaderProgram)
     context.useProgram(shaderProgram)
 
+    return shaderProgram
 }
 
 function _createVertexShader(context) {
 
     let vertexShaderCode = `
+    attribute vec3 coordinates;
     void main(){
-        gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
+        gl_Position = vec4(coordinates, 1.0);
         gl_PointSize = 10.0;
     }`
 
