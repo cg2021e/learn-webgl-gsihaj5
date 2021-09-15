@@ -11,10 +11,12 @@ export function createShaderProgram(context) {
 function _createVertexShader(context) {
 
     let vertexShaderCode = `
-    attribute vec3 coordinates;
+    attribute vec3 aCoordinates;
+    varying mediump vec4 vColor;
     void main(){
-        gl_Position = vec4(coordinates, 1.0);
+        gl_Position = vec4(aCoordinates, 1.0);
         gl_PointSize = 10.0;
+        vColor = vec4(1 , .5 , .5 , 1);
     }`
 
     let vertexShader = context.createShader(context.VERTEX_SHADER);
@@ -26,8 +28,9 @@ function _createVertexShader(context) {
 
 function _createFragmentShader(context) {
     let fragmentShaderCode = `
+    varying mediump vec4 vColor;
     void main(){
-        gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+        gl_FragColor = vColor;
     }
     `
 
@@ -38,3 +41,19 @@ function _createFragmentShader(context) {
     return fragmentShader
 }
 
+export function bindArrayInsideShader(context, shaderProgram, arrayToBePushed, shaderAttribute) {
+    _bindAndPushDataToBuffer(context, arrayToBePushed)
+    _bindBufferToShaderAttribute(context, shaderProgram, shaderAttribute)
+}
+
+function _bindAndPushDataToBuffer(context, arrayToBePushed) {
+    let vertex_buffer = context.createBuffer();
+    context.bindBuffer(context.ARRAY_BUFFER, vertex_buffer)
+    context.bufferData(context.ARRAY_BUFFER, arrayToBePushed, context.STATIC_DRAW)
+}
+
+function _bindBufferToShaderAttribute(context, shaderProgram, shaderAttribute) {
+    let coordinate = context.getAttribLocation(shaderProgram, shaderAttribute)
+    context.vertexAttribPointer(coordinate, 3, context.FLOAT, false, 0, 0);
+    context.enableVertexAttribArray(coordinate)
+}
