@@ -1,5 +1,5 @@
-import * as WEBGL from "./webgl.js"
-import Vertice from "./Vertice.js";
+import * as WEBGL from "./WEBGL/webgl.js"
+import Vertice from "./WEBGL/Vertice.js";
 
 let context, canvas, shaderProgram, bufferVertices;
 
