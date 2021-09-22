@@ -17,7 +17,6 @@ export default class Scene {
         this.context.attachShader(this.shaderProgram, this._createFragmentShader())
         this.context.linkProgram(this.shaderProgram)
         this.context.useProgram(this.shaderProgram)
-        console.log("shader program created")
     }
 
     _createVertexShader() {
@@ -57,7 +56,6 @@ export default class Scene {
         this.context.bindBuffer(this.context.ARRAY_BUFFER, buffer)
         this.context.bufferData(this.context.ARRAY_BUFFER, arrayToBePushed, this.context.STATIC_DRAW)
 
-        console.log("using shader Program")
         let coordinate = this.context.getAttribLocation(this.shaderProgram, shaderAttribute)
         this.context.vertexAttribPointer(coordinate, 3, this.context.FLOAT, false, 0, 0);
         this.context.enableVertexAttribArray(coordinate)
@@ -68,6 +66,12 @@ export default class Scene {
         this.geometries.push(geometry)
     }
 
+    remove(removedGeometry) {
+        this.geometries.forEach((geometry, index, object) => {
+            if (removedGeometry === geometry) object.splice(index, 1);
+        })
+    }
+
     render() {
         let vertices = [];
 
@@ -75,7 +79,6 @@ export default class Scene {
             vertices.push(...geometry.getVerticeArray())
         })
 
-        console.log(vertices)
         vertices = new Float32Array([...vertices])
 
         this._bindArrayInsideShader(vertices, "aCoordinates")
