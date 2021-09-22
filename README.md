@@ -20,6 +20,15 @@ After creating the canvas tag, you simply load your js file like this
 <script type="module" src="main.js"></script>
 ```
 
+Import the basic dependency
+
+```js
+import Scene from "./WEBGL/Scene.js";
+import Geometry from "./WEBGL/Geometry.js";
+import Vector3 from "./WEBGL/Vector3.js";
+import Face from "./WEBGL/Face.js";
+```
+
 Inside the main.js you have to initiate Scene class from the bundle
 
 ```js
