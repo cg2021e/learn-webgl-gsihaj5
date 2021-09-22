@@ -1,57 +1,37 @@
-import * as WEBGL from "./WEBGL/webgl.js"
-import Vertice from "./WEBGL/Vertice.js";
+import Scene from "./WEBGL/Scene.js";
+import Geometry from "./WEBGL/Geometry.js";
+import Vector3 from "./WEBGL/Vector3.js";
+import Face from "./WEBGL/Face.js";
 
-let context, canvas, shaderProgram, bufferVertices;
-
-let vertices
+let canvas, scene;
 
 function main() {
-    //region BASIC SETUP
     canvas = document.querySelector("#glCanvas");
-    context = canvas.getContext("webgl");
+    scene = new Scene(canvas);
 
-    if (context === null) {
-        alert("Unable to initialize WebGL. Your browser or machine may not support it.");
-        return;
-    }
+    let geometry = new Geometry();
 
-    shaderProgram = WEBGL.createShaderProgram(context)
-    //endregion
+    geometry.addVertice(new Vector3(0, 0, 0))
+    geometry.addVertice(new Vector3(0, .5, 0))
+    geometry.addVertice(new Vector3(.5, .5, 0))
 
-    //put vertices inside buffer
+    geometry.addFace(new Face(0, 1, 2))
 
-    vertices = [
-        new Vertice(0, 0, 0),
-        new Vertice(.5, 0, 0),
-        new Vertice(.5, .5, 0)
-    ]
+    scene.add(geometry)
 
-    bufferVertices = Vertice.convertAllVerticeToSingleFloat32Array()
+    let geometry1 = new Geometry();
 
-    WEBGL.bindArrayInsideShader(context, shaderProgram, bufferVertices, "aCoordinates")
+    geometry1.addVertice(new Vector3(.5, 0, 0))
+    geometry1.addVertice(new Vector3(1, 0, 0))
+    geometry1.addVertice(new Vector3(1, .5, 0))
 
-    //reset the canvas
-    context.clearColor(1.0, 1.0, 1.0, 1.0)
-    context.clear(context.COLOR_BUFFER_BIT);
+    geometry1.addFace(new Face(0, 1, 2))
 
-    context.drawArrays(context.TRIANGLE_FAN, 0, vertices.length / 3);
+    scene.add(geometry1)
 }
 
 function update() {
-    vertices.forEach(vertice => {
-            vertice.x += .01;
-            if (vertice.x > 1) vertice.x = 0;
-        }
-    )
-
-    bufferVertices = Vertice.convertAllVerticeToSingleFloat32Array()
-    WEBGL.bindArrayInsideShader(context, shaderProgram, bufferVertices, "aCoordinates")
-
-    //reset the canvas
-    context.clearColor(1.0, 1.0, 1.0, 1.0)
-    context.clear(context.COLOR_BUFFER_BIT);
-
-    context.drawArrays(context.TRIANGLE_FAN, 0, bufferVertices.length / 3);
+    scene.render();
 }
 
 function animate() {
