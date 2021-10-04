@@ -11,4 +11,8 @@ export default class Vector3 {
     getArray() {
         return [this.x, this.y, this.z]
     }
+
+    clone() {
+        return new Vector3(this.x, this.y, this.z)
+    }
 }
