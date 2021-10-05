@@ -1,14 +1,13 @@
 export default class Color {
 
-    constructor(red, green, blue, alpha) {
-        this.r = red;
-        this.g = green;
-        this.b = blue;
-        this.a = alpha;
+    constructor(red = 255, green = 255, blue = 255) {
+        this.r = red / 255;
+        this.g = green / 255;
+        this.b = blue / 255;
     }
 
     getArray() {
-        return [this.r, this.g, this.b, this.a]
+        return [this.r, this.g, this.b]
     }
 
 }

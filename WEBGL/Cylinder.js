@@ -4,11 +4,9 @@ import Face from "./Face.js";
 
 export default class Cylinder extends Geometry {
 
-    constructor(bottomRadius, topRadius, height, section, position) {
-        if (position) {
-            super(position);
-        } else
-            super();
+    constructor(bottomRadius, topRadius, height, section, position, color) {
+        super(position, color);
+
 
         this.section = section;
 
@@ -34,7 +32,6 @@ export default class Cylinder extends Geometry {
             this.addVertice(new Vector3(this.position.x + x, y, this.position.z + z))
             angle += deltaAngle
         }
-
     }
 
     _createCircleFace(center, startIndex, endIndex) {
