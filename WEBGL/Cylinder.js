@@ -6,22 +6,19 @@ export default class Cylinder extends Geometry {
 
     constructor(bottomRadius, topRadius, height, section, position) {
         if (position) {
-            console.log(position)
             super(position);
         } else
             super();
 
         this.section = section;
 
-        this._createCircleVertice(bottomRadius, this.position.y - height / 2)
+        this._createCircleVertice(bottomRadius, this.position.y)
         this._createCircleFace(0, 1, this.section)
 
-        this._createCircleVertice(topRadius, this.position.y + height / 2)
+        this._createCircleVertice(topRadius, this.position.y + height)
         this._createCircleFace(this.section + 1, this.section + 2, this.section * 2 + 1)
 
         this._createVerticalFace()
-
-        console.log(this._vertices)
     }
 
     _createCircleVertice(radius, y) {
