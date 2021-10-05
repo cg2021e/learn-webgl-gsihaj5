@@ -15,4 +15,10 @@ export default class Vector3 {
     clone() {
         return new Vector3(this.x, this.y, this.z)
     }
+
+    translate(x, y, z) {
+        this.x += x;
+        this.y += y;
+        this.z += z;
+    }
 }

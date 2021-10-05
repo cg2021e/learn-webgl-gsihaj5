@@ -37,5 +37,8 @@ export default class Geometry {
 
     }
 
+    translate(x, y, z) {
+        this._vertices.forEach((vertice) => vertice.translate(x, y, z))
+    }
 
 }
